@@ -1,0 +1,1 @@
+class Embed: pass
