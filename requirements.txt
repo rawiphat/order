@@ -1,2 +1,2 @@
 flask
-nextcord==2.6.0
+nextcord==2.5.0
