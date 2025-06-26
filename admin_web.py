@@ -1,4 +1,3 @@
-
 from flask import Flask, request, redirect, render_template_string
 import sqlite3
 import os
@@ -6,7 +5,6 @@ import os
 app = Flask(__name__)
 DB = "orders.db"
 
-# ✅ สร้างตาราง orders ถ้ายังไม่มี
 if not os.path.exists(DB):
     conn = sqlite3.connect(DB)
     conn.execute('''
@@ -71,5 +69,4 @@ def delete_order(order_id):
     return redirect("/")
 
 if __name__ == "__main__":
-    print("✅ Flask Web Admin พร้อมที่ http://localhost:8080")
     app.run(debug=True, port=8080)
