@@ -1,23 +1,12 @@
-class Bot:
-    def __init__(self, command_prefix=None, intents=None):
-        self.command_prefix = command_prefix
-        self.intents = intents
-        self._events = {}
-        self.tree = self
 
-    def run(self, token):
-        print(f"[RUNNING BOT] token={token[:6]}...")
+import os
+from nextcord.ext import commands
 
-    def command(self, name=None):
-        def decorator(func):
-            return func
-        return decorator
+TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 
-    def event(self, func):
-        self._events[func.__name__] = func
-        return func
+intents = commands.Intents.default()
+bot = commands.Bot(command_prefix="!", intents=intents)
 
-    def slash_command(self, name=None, description=None):
-        def decorator(func):
-            return func
-        return decorator
+@bot.event
+async def on_ready():
+    print(f"Bot is ready. Logged in as {bot.user}")

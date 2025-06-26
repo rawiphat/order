@@ -1,3 +1,4 @@
+
 #!/bin/bash
-python admin_web.py &
+pip install -r requirements.txt
 python bot.py
