@@ -11,3 +11,4 @@ from .webhook import *
 from .utils import *
 from .ext import commands, tasks
 __version__ = "2.5.0"
+from .interactions import *
