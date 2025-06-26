@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import threading
 from flask import Flask, request, jsonify, redirect, render_template_string
 from discord_interactions import InteractionType, InteractionResponseType, verify_key_decorator
 
@@ -21,6 +22,13 @@ if not os.path.exists(DB):
     conn.commit()
     conn.close()
 
+def save_order(user_id, order_text):
+    conn = sqlite3.connect(DB)
+    conn.execute("INSERT INTO orders (user_id, order_text, status, notified) VALUES (?, ?, ?, ?)",
+                 (user_id, order_text, "รอดำเนินการ", 0))
+    conn.commit()
+    conn.close()
+
 @app.route("/", methods=["POST"])
 @verify_key_decorator(PUBLIC_KEY)
 def interactions():
@@ -32,13 +40,7 @@ def interactions():
         if data["data"]["name"] == "order":
             order_text = data["data"]["options"][0]["value"]
             user_id = data["member"]["user"]["id"]
-
-            conn = sqlite3.connect(DB)
-            conn.execute("INSERT INTO orders (user_id, order_text, status, notified) VALUES (?, ?, ?, ?)",
-                         (user_id, order_text, "รอดำเนินการ", 0))
-            conn.commit()
-            conn.close()
-
+            threading.Thread(target=save_order, args=(user_id, order_text)).start()
             return jsonify({
                 "type": InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 "data": {
