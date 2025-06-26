@@ -1,10 +1,10 @@
-import discord
-from discord import app_commands
-from discord.ext import commands
+import nextcord
+from nextcord.ext import commands
+from nextcord import Interaction, SlashOption
 import sqlite3
 import os
 
-intents = discord.Intents.default()
+intents = nextcord.Intents.default()
 bot = commands.Bot(command_prefix="/", intents=intents)
 
 DB = "orders.db"
@@ -18,9 +18,9 @@ async def on_ready():
         print("❌ Sync failed:", e)
     print(f"🤖 Logged in as {bot.user}")
 
-@bot.tree.command(name="order", description="ส่งออเดอร์ใหม่")
-@app_commands.describe(text="ข้อความออเดอร์")
-async def order(interaction: discord.Interaction, text: str):
+@bot.slash_command(name="order", description="ส่งออเดอร์ใหม่")
+async def order(interaction: Interaction,
+                text: str = SlashOption(description="ข้อความออเดอร์")):
     conn = sqlite3.connect(DB)
     conn.execute("INSERT INTO orders (user_id, order_text, status, notified) VALUES (?, ?, ?, ?)",
                  (str(interaction.user.id), text, "รอดำเนินการ", 0))
