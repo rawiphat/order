@@ -1,3 +1,4 @@
+
 from flask import Flask, request, redirect, render_template_string
 import sqlite3
 import os
@@ -5,7 +6,7 @@ import os
 app = Flask(__name__)
 DB = "orders.db"
 
-# ✅ สร้างไฟล์ฐานข้อมูลและตาราง orders ถ้ายังไม่มี
+# ✅ สร้างตาราง orders ถ้ายังไม่มี
 if not os.path.exists(DB):
     conn = sqlite3.connect(DB)
     conn.execute('''
@@ -20,7 +21,6 @@ if not os.path.exists(DB):
     conn.commit()
     conn.close()
 
-# HTML UI
 TEMPLATE = '''
 <h2>📋 รายการออเดอร์ทั้งหมด</h2>
 <table border=1 cellpadding=6>
