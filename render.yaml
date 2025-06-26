@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: order-bot
+    env: python
+    buildCommand: ""
+    startCommand: ./start.sh
+    plan: free
+    region: singapore
+    envVars:
+      - key: DISCORD_BOT_TOKEN
+        value: YOUR_TOKEN_HERE
