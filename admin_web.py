@@ -40,7 +40,7 @@ TEMPLATE = '''
 </table>
 '''
 
-@app.route("/")
+@app.route("/admin")
 def index():
     conn = sqlite3.connect(DB)
     orders = conn.execute("SELECT * FROM orders").fetchall()
@@ -58,7 +58,7 @@ def update_order(order_id):
         conn.execute("UPDATE orders SET status=? WHERE id=?", (new_status, order_id))
     conn.commit()
     conn.close()
-    return redirect("/")
+    return redirect("/admin")
 
 @app.route("/delete/<int:order_id>", methods=["POST"])
 def delete_order(order_id):
@@ -66,7 +66,4 @@ def delete_order(order_id):
     conn.execute("DELETE FROM orders WHERE id=?", (order_id,))
     conn.commit()
     conn.close()
-    return redirect("/")
-
-if __name__ == "__main__":
-    app.run(debug=True, port=8080)
+    return redirect("/admin")
