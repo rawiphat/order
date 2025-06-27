@@ -32,7 +32,6 @@ async def order(interaction: Interaction, รายการ: str = SlashOption(
     if admin_channel:
         await admin_channel.send(
             f"📥 มีออเดอร์ใหม่จาก {interaction.user.mention}:"
-```{รายการ}```",
             view=ConfirmView()
         )
 
