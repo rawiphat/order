@@ -35,13 +35,14 @@ async def on_ready():
     except Exception as e:
         print(f"❌ Sync failed: {e}")
 
-@bot.tree.command(name="order", description="ส่งออเดอร์", guild=Object(id=GUILD_ID))
-async def order(interaction: Interaction, รายการ: str = SlashOption(description="พิมพ์รายการ")):
-    admin_channel_id = int(os.getenv("ADMIN_CHANNEL_ID", "YOUR_CHANNEL_ID"))
-    admin_channel = bot.get_channel(admin_channel_id)
-if admin_channel:
-    await admin_channel.send(f"📥 มีออเดอร์ใหม่จาก {interaction.user.mention}:\n```{รายการ}```", view=ConfirmView())
-
-    await interaction.response.send_message("📦 ส่งออเดอร์ของคุณไปยังแอดมินแล้ว!", ephemeral=True)
+@bot.slash_command(name="order", description="ส่งออเดอร์", guild_ids=[GUILD_ID])
+async def order_command(interaction: Interaction, รายการ: str):
+    admin_channel = bot.get_channel(ADMIN_CHANNEL_ID)
+    if admin_channel:
+        await admin_channel.send(
+            f"📥 มีออเดอร์ใหม่จาก {interaction.user.mention}:\n```{รายการ}```",
+            view=ConfirmView()
+        )
+    await interaction.response.send_message("✅ ส่งออเดอร์เรียบร้อยแล้ว!", ephemeral=True)
 
 bot.run(TOKEN)
