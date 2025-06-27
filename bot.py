@@ -1,8 +1,8 @@
 import nextcord
 from nextcord.ext import commands
 from nextcord import Interaction, SlashOption
-from nextcord.utils import get, Object
-from flask import Flask, render_template
+from nextcord.utils import Object
+from flask import Flask, render_template_string
 import sqlite3
 import threading
 import os
@@ -18,14 +18,14 @@ app = Flask(__name__)
 def init_db():
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
-    c.execute("""
+    c.execute('''
         CREATE TABLE IF NOT EXISTS orders (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id TEXT,
             content TEXT,
             status TEXT
         )
-    """)
+    ''')
     conn.commit()
     conn.close()
 
@@ -79,7 +79,7 @@ async def order(interaction: Interaction, รายการ: str = SlashOption(
     conn.commit()
     conn.close()
 
-    admin_channel = bot.get_channel(123456789012345678)  # 🔁 ใส่ channel ID ของแอดมิน
+    admin_channel = bot.get_channel(1386302028858523668)  # 🔁 ใส่ channel ID ของแอดมิน
     if admin_channel:
         await admin_channel.send(
             f"📥 มีออเดอร์ใหม่จาก {interaction.user.mention}:\n```{รายการ}```",
@@ -95,7 +95,15 @@ def index():
     c.execute("SELECT id, user_id, content, status FROM orders ORDER BY id DESC")
     rows = c.fetchall()
     conn.close()
-    return render_template("index.html", orders=rows)
+    html = """<h2>🛠️ Admin Order List</h2>
+<table border="1" cellpadding="5">
+    <tr><th>ID</th><th>User ID</th><th>Content</th><th>Status</th></tr>
+    {% for r in orders %}
+    <tr><td>{{ r[0] }}</td><td>{{ r[1] }}</td><td>{{ r[2] }}</td><td>{{ r[3] }}</td></tr>
+    {% endfor %}
+</table>
+"""
+    return render_template_string(html, orders=rows)
 
 def run_web():
     app.run(host="0.0.0.0", port=10000)
