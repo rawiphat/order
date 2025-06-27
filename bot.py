@@ -30,9 +30,10 @@ async def order(interaction: Interaction, รายการ: str = SlashOption(
     await interaction.response.send_message("📤 ส่งออเดอร์แล้ว รอยืนยัน...", ephemeral=True)
     admin_channel = bot.get_channel(ADMIN_CHANNEL_ID)
     if admin_channel:
-        await admin_channel.send(
-            f"📥 มีออเดอร์ใหม่จาก {interaction.user.mention}:"
-            view=ConfirmView()
-        )
+await admin_channel.send(
+    f"""📥 มีออเดอร์ใหม่จาก {interaction.user.mention}:
+```{snms}```""",
+    view=ConfirmView()
+)
 
 bot.run(TOKEN)
