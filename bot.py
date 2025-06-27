@@ -4,7 +4,6 @@ from nextcord.ext import commands
 from nextcord import Interaction, SlashOption
 from nextcord.abc import GuildChannel
 from nextcord.utils import Object
-import nextcord
 from nextcord.ext import commands
 from nextcord import Interaction, SlashOption
 from nextcord.utils import Object  # <== ใช้แค่นี้ก็พอ
