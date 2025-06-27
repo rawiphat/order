@@ -5,7 +5,7 @@ from nextcord import Interaction, SlashOption, Object
 
 TOKEN = os.getenv("DISCORD_TOKEN")
 GUILD_ID = 1386301748062453811  # เปลี่ยนเป็น Guild ID ของคุณ
-ADMIN_CHANNEL_ID = 123456789012345678  # เปลี่ยนเป็น Channel ID ของแอดมิน
+ADMIN_CHANNEL_ID = 1386302028858523668  # เปลี่ยนเป็น Channel ID ของแอดมิน
 
 intents = nextcord.Intents.default()
 intents.message_content = True
