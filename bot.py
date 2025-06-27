@@ -48,11 +48,10 @@ async def order(interaction: Interaction, รายการ: str = SlashOption(
 
     admin_channel = bot.get_channel(1386302028858523668)  # เปลี่ยนเป็น channel ID จริง
     if admin_channel:
-        await admin_channel.send(
-            f"📥 มีออเดอร์ใหม่จาก {interaction.user.mention}:
-```{รายการ}```",
-            view=ConfirmView()
-        )
+await admin_channel.send(
+    f"📥 มีออเดอร์ใหม่จาก {interaction.user.mention}:\n```{รายการ}```",
+    view=ConfirmView()
+)
 
 # Web Admin
 app = Flask(__name__)
