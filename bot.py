@@ -44,7 +44,7 @@ async def order(interaction: Interaction, รายการ: str = SlashOption(
     conn.close()
 
     # ส่งไปยัง Admin Channel
-    admin_channel = bot.get_channel(1386302028858523668)
+    admin_channel = bot.get_channel(YOUR_ADMIN_CHANNEL_ID)
     if admin_channel:
         await admin_channel.send(
             f"📥 มีออเดอร์ใหม่จาก {interaction.user.mention}:
