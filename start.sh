@@ -1,3 +1,3 @@
 #!/bin/bash
-python admin_web.py &  # run Flask in background
-python bot.py          # run bot in foreground
+pip install -r requirements.txt
+python bot.py
