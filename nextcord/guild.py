@@ -1,1 +1,0 @@
-class Guild: pass
