@@ -1,2 +1,2 @@
 flask==3.1.1
-nextcord==2.5.0
+nextcord[no-voice]==2.5.0
