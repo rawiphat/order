@@ -1,37 +1,10 @@
-
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>Order Admin Panel</title>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background-color: #eee; }
-    </style>
-</head>
+<head><title>Admin Web</title></head>
 <body>
-    <h2>รายการออเดอร์ล่าสุด</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>ผู้ใช้</th>
-                <th>ข้อความ</th>
-                <th>สถานะ</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in orders %}
-            <tr>
-                <td>{{ order[0] }}</td>
-                <td>{{ order[2] }}</td>
-                <td>{{ order[3] }}</td>
-                <td>{{ order[4] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <h1>รายการออเดอร์</h1>
+    {% for o in orders %}
+        <p>[{{ o[0] }}] <b>{{ o[2] }}</b>: {{ o[3] }} ({{ o[4] }})</p>
+    {% endfor %}
 </body>
 </html>
