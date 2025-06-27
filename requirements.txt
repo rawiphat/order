@@ -1,2 +1,0 @@
-flask
-nextcord[no-voice]==2.5.0
