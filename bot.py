@@ -47,8 +47,8 @@ async def order(interaction: Interaction, รายการ: str = SlashOption(
     await interaction.response.send_message("📦 ส่งออเดอร์เรียบร้อย รอยืนยันจากแอดมิน", ephemeral=True)
 
     admin_channel = bot.get_channel(1386302028858523668)  # เปลี่ยนเป็น channel ID จริง
-    if admin_channel:
-await admin_channel.send(
+if admin_channel:
+    await admin_channel.send(...)
     f"📥 มีออเดอร์ใหม่จาก {interaction.user.mention}:\n```{รายการ}```",
     view=ConfirmView()
 )
