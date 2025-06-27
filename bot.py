@@ -51,7 +51,6 @@ if admin_channel:
     await admin_channel.send(...)
     f"📥 มีออเดอร์ใหม่จาก {interaction.user.mention}:\n```{รายการ}```",
     view=ConfirmView()
-)
 
 # Web Admin
 app = Flask(__name__)
