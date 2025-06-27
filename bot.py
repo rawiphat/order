@@ -39,8 +39,9 @@ async def on_ready():
 async def order(interaction: Interaction, รายการ: str = SlashOption(description="พิมพ์รายการ")):
     admin_channel_id = int(os.getenv("ADMIN_CHANNEL_ID", "YOUR_CHANNEL_ID"))
     admin_channel = bot.get_channel(admin_channel_id)
-    if admin_channel:
-await admin_channel.send(f"📥 มีออเดอร์ใหม่จาก {interaction.user.mention}:\n```{รายการ}```", view=ConfirmView())
+if admin_channel:
+    await admin_channel.send(f"📥 มีออเดอร์ใหม่จาก {interaction.user.mention}:\n```{รายการ}```", view=ConfirmView())
+
     await interaction.response.send_message("📦 ส่งออเดอร์ของคุณไปยังแอดมินแล้ว!", ephemeral=True)
 
 bot.run(TOKEN)
