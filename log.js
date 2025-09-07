@@ -1,18 +1,14 @@
+require("dotenv").config();
+const { Client, GatewayIntentBits, EmbedBuilder, ChannelType, PermissionsBitField } = require("discord.js");
 const express = require("express");
 const app = express();
+
+// ---- Keep alive server ----
 const PORT = process.env.PORT || 3000;
-
 app.get("/", (req, res) => res.send("Bot is running"));
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
-require("dotenv").config();
-const { 
-    Client, 
-    GatewayIntentBits, 
-    EmbedBuilder, 
-    ChannelType, 
-    PermissionsBitField 
-} = require("discord.js");
+app.listen(PORT, () => console.log(`🌐 Web server running on port ${PORT}`));
 
+// ---- Discord Bot ----
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -23,7 +19,7 @@ const client = new Client({
     ]
 });
 
-// โหลดเลขห้องจาก env
+// Env variables
 const GUILD_ID = process.env.GUILD_ID;
 const LOG_CHANNELS = {
     logMessage: process.env.LOG_MESSAGE_CHANNEL,
@@ -31,51 +27,15 @@ const LOG_CHANNELS = {
     logBan: process.env.LOG_BAN_CHANNEL
 };
 
-// ฟังก์ชันช่วยตัดข้อความยาวเกิน 1024 ตัวอักษร
 const truncate = (str, max = 1024) => str?.length > max ? str.slice(0, max - 3) + "..." : str;
 
-client.once("ready", async () => {
+client.once("ready", () => {
     console.log(`✅ Logged in as ${client.user.tag}`);
-
-    const guild = client.guilds.cache.get(GUILD_ID);
-    if (!guild) {
-        console.log(`❌ Guild with ID ${GUILD_ID} not found`);
-        return;
-    }
-
-    try {
-        // ตรวจ bot permissions
-        await guild.members.fetch(client.user.id);
-        if (!guild.members.me.permissions.has(PermissionsBitField.Flags.Administrator)) {
-            console.log(`❌ Bot missing Admin permission in ${guild.name}`);
-            return;
-        }
-
-        // ตรวจ category "🤖┃ บอท & ระบบ" (ไม่สร้างใหม่)
-        const category = guild.channels.cache.find(
-            c => c.name === "🤖┃ บอท & ระบบ" && c.type === ChannelType.GuildCategory
-        );
-        if (!category) {
-            console.log(`⚠️ Warning: Category "🤖┃ บอท & ระบบ" not found. No new category will be created.`);
-        }
-
-        // ตรวจห้อง log แต่ละประเภท ตาม ID ใน env (ไม่สร้างใหม่)
-        for (const [key, channelId] of Object.entries(LOG_CHANNELS)) {
-            const ch = guild.channels.cache.get(channelId);
-            if (!ch) {
-                console.log(`⚠️ Warning: Channel ID for ${key} not found in guild. No new channel will be created.`);
-            }
-        }
-
-        console.log(`✅ Guild initialization completed for ${guild.name}`);
-    } catch (err) {
-        console.log(`❌ Error initializing guild ${guild.name}: ${err.message}`);
-    }
 });
 
-// ------------------ EVENT LOGS ------------------
+// ------------------ Event Logs ------------------
 
-// ข้อความถูกลบ
+// Message Delete
 client.on("messageDelete", async (message) => {
     if (!message.guild || message.author?.bot) return;
     if (message.guild.id !== GUILD_ID) return;
@@ -98,7 +58,7 @@ client.on("messageDelete", async (message) => {
     logChannel.send({ embeds: [embed] });
 });
 
-// ข้อความถูกแก้ไข
+// Message Update
 client.on("messageUpdate", async (oldMessage, newMessage) => {
     if (!oldMessage.guild || oldMessage.author?.bot) return;
     if (oldMessage.guild.id !== GUILD_ID) return;
@@ -122,7 +82,7 @@ client.on("messageUpdate", async (oldMessage, newMessage) => {
     logChannel.send({ embeds: [embed] });
 });
 
-// สมาชิกเข้า
+// Member Join
 client.on("guildMemberAdd", async (member) => {
     if (member.guild.id !== GUILD_ID) return;
     const logChannel = member.guild.channels.cache.get(LOG_CHANNELS.logMember);
@@ -141,7 +101,7 @@ client.on("guildMemberAdd", async (member) => {
     logChannel.send({ embeds: [embed] });
 });
 
-// สมาชิกออก
+// Member Leave
 client.on("guildMemberRemove", async (member) => {
     if (member.guild.id !== GUILD_ID) return;
     const logChannel = member.guild.channels.cache.get(LOG_CHANNELS.logMember);
@@ -160,7 +120,7 @@ client.on("guildMemberRemove", async (member) => {
     logChannel.send({ embeds: [embed] });
 });
 
-// การแบน
+// Guild Ban
 client.on("guildBanAdd", async (ban) => {
     if (ban.guild.id !== GUILD_ID) return;
     const logChannel = ban.guild.channels.cache.get(LOG_CHANNELS.logBan);
