@@ -24,7 +24,7 @@ const LOG_CHANNELS = {
 // ---------------- Helper ----------------
 const truncate = (str, max = 1024) => str?.length > max ? str.slice(0, max - 3) + "..." : str;
 
-// ---------------- Keep Alive Self Ping ----------------
+// ---------------- Keep Alive Self Ping ทุก 10 วินาที ----------------
 if (process.env.SELF_PING_URL) {
     setInterval(async () => {
         try {
@@ -33,7 +33,7 @@ if (process.env.SELF_PING_URL) {
         } catch (err) {
             console.error("❌ Ping failed", err);
         }
-    }, 5 * 60 * 1000); // ทุก 5 นาที
+    }, 10 * 1000); // ทุก 10 วินาที
 }
 
 // ---------------- Event Handlers ----------------
