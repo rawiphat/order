@@ -5,10 +5,8 @@
   "scripts": {
     "start": "node log.js"
   },
-  "dependencies": {
-    "discord.js": "^14.13.0",
-    "dotenv": "^16.3.1",
-    "node-fetch": "^3.4.1"
-  },
-  "type": "module"
+"dependencies": {
+  "discord.js": "^14.13.0",
+  "dotenv": "^16.3.1",
+  "node-fetch": "^3.3.1"
 }
