@@ -45,40 +45,23 @@ client.once("ready", async () => {
             return;
         }
 
-        // ตรวจ category "🤖┃ บอท & ระบบ" หรือสร้างใหม่ถ้าไม่เจอ
-        let category = guild.channels.cache.find(
+        // ตรวจ category "🤖┃ บอท & ระบบ" (ไม่สร้างใหม่)
+        const category = guild.channels.cache.find(
             c => c.name === "🤖┃ บอท & ระบบ" && c.type === ChannelType.GuildCategory
         );
         if (!category) {
-            category = await guild.channels.create({
-                name: "🤖┃ บอท & ระบบ",
-                type: ChannelType.GuildCategory
-            });
-            console.log(`📂 Created category in ${guild.name}`);
+            console.log(`⚠️ Warning: Category "🤖┃ บอท & ระบบ" not found. No new category will be created.`);
         }
 
-        // ตรวจห้อง log แต่ละประเภท ถ้าไม่เจอ → สร้างใหม่
+        // ตรวจห้อง log แต่ละประเภท ตาม ID ใน env (ไม่สร้างใหม่)
         for (const [key, channelId] of Object.entries(LOG_CHANNELS)) {
-            let ch = guild.channels.cache.get(channelId);
+            const ch = guild.channels.cache.get(channelId);
             if (!ch) {
-                // ถ้า channel ID ใน env ไม่มีหรือหายไป ให้สร้างใหม่
-                const defaultNames = {
-                    logMessage: "📝┃log-ข้อความ",
-                    logMember: "🛡️┃log-สมาชิก",
-                    logBan: "⚔️┃log-แบน"
-                };
-                ch = await guild.channels.create({
-                    name: defaultNames[key],
-                    type: ChannelType.GuildText,
-                    parent: category.id,
-                    permissionOverwrites: [
-                        { id: guild.roles.everyone.id, deny: [PermissionsBitField.Flags.SendMessages] },
-                        { id: client.user.id, allow: [PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel] }
-                    ]
-                });
-                console.log(`✅ Created channel ${ch.name} in ${guild.name}`);
+                console.log(`⚠️ Warning: Channel ID for ${key} not found in guild. No new channel will be created.`);
             }
         }
+
+        console.log(`✅ Guild initialization completed for ${guild.name}`);
     } catch (err) {
         console.log(`❌ Error initializing guild ${guild.name}: ${err.message}`);
     }
