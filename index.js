@@ -1,9 +1,5 @@
 require("dotenv").config();
-const { 
-    Client, 
-    GatewayIntentBits, 
-    EmbedBuilder 
-} = require("discord.js");
+const { Client, GatewayIntentBits, EmbedBuilder } = require("discord.js");
 
 const TOKEN = process.env.DISCORD_TOKEN;
 const LOG_CHANNEL_ID = process.env.LOG_CHANNEL_ID;
@@ -21,7 +17,7 @@ client.once("ready", () => {
     console.log(`✅ Logged in as ${client.user.tag}`);
 });
 
-// ---------------------- LOG: ข้อความถูกลบ ----------------------
+// ---------- LOG: ข้อความถูกลบ ----------
 client.on("messageDelete", async (message) => {
     if (!message.guild || message.author?.bot) return;
     const logChannel = message.guild.channels.cache.get(LOG_CHANNEL_ID);
@@ -41,7 +37,7 @@ client.on("messageDelete", async (message) => {
     logChannel.send({ embeds: [embed] });
 });
 
-// ---------------------- LOG: ข้อความถูกแก้ไข ----------------------
+// ---------- LOG: ข้อความถูกแก้ไข ----------
 client.on("messageUpdate", async (oldMessage, newMessage) => {
     if (!oldMessage.guild || oldMessage.author?.bot) return;
     if (oldMessage.content === newMessage.content) return;
@@ -63,7 +59,7 @@ client.on("messageUpdate", async (oldMessage, newMessage) => {
     logChannel.send({ embeds: [embed] });
 });
 
-// ---------------------- LOG: สมาชิกเข้า ----------------------
+// ---------- LOG: สมาชิกเข้า ----------
 client.on("guildMemberAdd", async (member) => {
     const logChannel = member.guild.channels.cache.get(LOG_CHANNEL_ID);
     if (!logChannel) return;
@@ -80,7 +76,7 @@ client.on("guildMemberAdd", async (member) => {
     logChannel.send({ embeds: [embed] });
 });
 
-// ---------------------- LOG: สมาชิกออก ----------------------
+// ---------- LOG: สมาชิกออก ----------
 client.on("guildMemberRemove", async (member) => {
     const logChannel = member.guild.channels.cache.get(LOG_CHANNEL_ID);
     if (!logChannel) return;
