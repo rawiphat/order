@@ -1,0 +1,13 @@
+{
+  "name": "discord-logger-bot",
+  "version": "1.0.0",
+  "description": "Discord Logging Bot running 24/7 on Render",
+  "main": "log.js",
+  "scripts": {
+    "start": "node log.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5"
+  }
+}
