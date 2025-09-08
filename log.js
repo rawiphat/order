@@ -1,8 +1,14 @@
-import "dotenv/config";
-import fetch from "node-fetch";
-import { Client, GatewayIntentBits, EmbedBuilder } from "discord.js";
+require("dotenv").config();
+const { Client, GatewayIntentBits, EmbedBuilder, ChannelType, PermissionsBitField } = require("discord.js");
+const express = require("express");
+const app = express();
 
-// ---------------- Discord Bot ----------------
+// ---- Keep alive server ----
+const PORT = process.env.PORT || 3000;
+app.get("/", (req, res) => res.send("Bot is running"));
+app.listen(PORT, () => console.log(`🌐 Web server running on port ${PORT}`));
+
+// ---- Discord Bot ----
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -13,7 +19,7 @@ const client = new Client({
     ]
 });
 
-// ---------------- Env Variables ----------------
+// Env variables
 const GUILD_ID = process.env.GUILD_ID;
 const LOG_CHANNELS = {
     logMessage: process.env.LOG_MESSAGE_CHANNEL,
@@ -21,25 +27,13 @@ const LOG_CHANNELS = {
     logBan: process.env.LOG_BAN_CHANNEL
 };
 
-// ---------------- Helper ----------------
 const truncate = (str, max = 1024) => str?.length > max ? str.slice(0, max - 3) + "..." : str;
 
-// ---------------- Keep Alive Self Ping ทุก 10 วินาที ----------------
-if (process.env.SELF_PING_URL) {
-    setInterval(async () => {
-        try {
-            await fetch(process.env.SELF_PING_URL);
-            console.log("🌐 Pinged self to stay alive");
-        } catch (err) {
-            console.error("❌ Ping failed", err);
-        }
-    }, 10 * 1000); // ทุก 10 วินาที
-}
-
-// ---------------- Event Handlers ----------------
 client.once("ready", () => {
     console.log(`✅ Logged in as ${client.user.tag}`);
 });
+
+// ------------------ Event Logs ------------------
 
 // Message Delete
 client.on("messageDelete", async (message) => {
